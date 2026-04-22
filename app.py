@@ -184,6 +184,7 @@ with st.sidebar:
     <div style='text-align:center; font-size:0.72rem; line-height:1.7; padding: 2rem 0 1rem 0; margin-top: 2rem;'>
         <div style='width:60%; margin:0 auto 8px auto; border-top:1px solid rgba(255,255,255,0.25);'></div>
         <div style='font-weight:700; font-size:0.8rem; letter-spacing:0.5px;'>© 2026 InsertCam</div>
+        <div style='opacity:0.67; font-size:0.68rem; letter-spacing:0.5px;'>TP INF 232 EC2</div>
         <div style='opacity:0.65; font-size:0.68rem;'>Plateforme Nationale de Suivi<br>de l'Insertion Professionnelle<br>des Jeunes Diplômés du Cameroun<br><br>Développé par<br><strong>TENKAM</strong></div>
     </div>
     """, unsafe_allow_html=True)
@@ -620,7 +621,8 @@ elif "KEN AI" in page:
     <div class="hero" style="background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 50%, #1d4ed8 100%);">
         <div class="badge">🤖 INTELLIGENCE ARTIFICIELLE</div>
         <h1>KEN AI</h1>
-        <p>Votre conseiller personnel en orientation professionnelle — disponible 24h/24</p>
+        <p>Votre conseiller personnel en orientation professionnelle — disponible 24h/24 </p>
+        <p>created by KEN MICHAEL </p>
     </div>
     """, unsafe_allow_html=True)
 
