@@ -622,7 +622,7 @@ elif "KEN AI" in page:
         <div class="badge">🤖 INTELLIGENCE ARTIFICIELLE</div>
         <h1>KEN AI</h1>
         <p>Votre conseiller personnel en orientation professionnelle — disponible 24h/24 </p>
-        <p>created by KEN MICHAEL </p>
+        <p>.                     created by KEN MICHAEL </p>
     </div>
     """, unsafe_allow_html=True)
 
