@@ -183,7 +183,7 @@ with st.sidebar:
     st.markdown("""
     <div style='text-align:center; font-size:0.72rem; line-height:1.7; padding: 2rem 0 1rem 0; margin-top: 2rem;'>
         <div style='width:60%; margin:0 auto 8px auto; border-top:1px solid rgba(255,255,255,0.25);'></div>
-        <div style='font-weight:700; font-size:0.8rem; letter-spacing:0.5px;'>© 2024 InsertCam</div>
+        <div style='font-weight:700; font-size:0.8rem; letter-spacing:0.5px;'>© 2026 InsertCam</div>
         <div style='opacity:0.65; font-size:0.68rem;'>Plateforme Nationale de Suivi<br>de l'Insertion Professionnelle<br>des Jeunes Diplômés du Cameroun<br><br>Développé par<br><strong>TENKAM</strong></div>
     </div>
     """, unsafe_allow_html=True)
