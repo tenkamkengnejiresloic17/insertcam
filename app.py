@@ -10,6 +10,7 @@ import plotly.graph_objects as go
 from datetime import date
 import io
 from database import init_db, insert_profil, get_all_profils, count_profils, seed_demo_data, get_summary_stats
+from groq import Groq
 
 @st.cache_data(ttl=60)
 def load_data():
@@ -165,7 +166,8 @@ with st.sidebar:
     page = st.radio(
         "Navigation",
         ["🏠  Tableau de bord", "📝  Soumettre mon profil",
-         "📊  Analyse descriptive", "🗂️  Données collectées", "📤  Exporter les données"],
+         "📊  Analyse descriptive", "🗂️  Données collectées", "📤  Exporter les données",
+         "🤖  KEN AI — Conseiller"],
         label_visibility="collapsed"
     )
 
@@ -181,9 +183,8 @@ with st.sidebar:
     st.markdown("""
     <div style='text-align:center; font-size:0.72rem; line-height:1.7; padding: 2rem 0 1rem 0; margin-top: 2rem;'>
         <div style='width:60%; margin:0 auto 8px auto; border-top:1px solid rgba(255,255,255,0.25);'></div>
-        <div style='font-weight:700; font-size:0.8rem; letter-spacing:0.5px;'>© 2026 InsertCam</div>
-        <div style='opacity:0.65; font-size:0.69rem; letter-spacing:1px; font-style:italic;'>TP INF232 EC2</div>
-        <div style='opacity:0.65; font-size:0.68rem;'>Plateforme Nationale de Suivi<br>de l'Insertion Professionnelle<br>des Jeunes Diplômés du Cameroun<br><br>developed by<br><strong>TENKAM</strong></div>
+        <div style='font-weight:700; font-size:0.8rem; letter-spacing:0.5px;'>© 2024 InsertCam</div>
+        <div style='opacity:0.65; font-size:0.68rem;'>Plateforme Nationale de Suivi<br>de l'Insertion Professionnelle<br>des Jeunes Diplômés du Cameroun<br><br>Développé par<br><strong>TENKAM</strong></div>
     </div>
     """, unsafe_allow_html=True)
 
@@ -607,3 +608,100 @@ elif "Exporter" in page:
         st.markdown("---")
         st.markdown("**Aperçu des données :**")
         st.dataframe(df.head(10), use_container_width=True)
+
+
+# ════════════════════════════════════════════════════════════════════════════
+# PAGE 6 — KEN AI CONSEILLER
+# ════════════════════════════════════════════════════════════════════════════
+
+elif "KEN AI" in page:
+
+    st.markdown("""
+    <div class="hero" style="background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 50%, #1d4ed8 100%);">
+        <div class="badge">🤖 INTELLIGENCE ARTIFICIELLE</div>
+        <h1>KEN AI</h1>
+        <p>Votre conseiller personnel en orientation professionnelle — disponible 24h/24</p>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # Init chat history
+    if "ken_messages" not in st.session_state:
+        st.session_state.ken_messages = [
+            {
+                "role": "assistant",
+                "content": "👋 Bonjour ! Je suis **KEN AI**, votre conseiller en orientation professionnelle.\n\nJe peux vous aider à :\n- 🎯 Identifier les secteurs porteurs au Cameroun\n- 📄 Préparer votre CV et lettre de motivation\n- 💼 Préparer vos entretiens d'embauche\n- 🚀 Développer votre stratégie de recherche d'emploi\n\nComment puis-je vous aider aujourd'hui ?"
+            }
+        ]
+
+    # Display chat history
+    for msg in st.session_state.ken_messages:
+        if msg["role"] == "assistant":
+            with st.chat_message("assistant", avatar="🤖"):
+                st.markdown(msg["content"])
+        else:
+            with st.chat_message("user", avatar="🎓"):
+                st.markdown(msg["content"])
+
+    # Chat input
+    if prompt := st.chat_input("Posez votre question à KEN AI..."):
+        # Add user message
+        st.session_state.ken_messages.append({"role": "user", "content": prompt})
+        with st.chat_message("user", avatar="🎓"):
+            st.markdown(prompt)
+
+        # Call Groq API
+        with st.chat_message("assistant", avatar="🤖"):
+            with st.spinner("KEN AI réfléchit..."):
+                try:
+                    api_key = st.secrets.get("GROQ_API_KEY", "")
+                    if not api_key:
+                        st.error("Clé API Groq manquante. Configurez GROQ_API_KEY dans les secrets Streamlit.")
+                    else:
+                        client = Groq(api_key=api_key)
+
+                        system_prompt = """Tu es KEN AI, un conseiller expert en orientation professionnelle 
+                        spécialisé pour les jeunes diplômés camerounais. Tu connais parfaitement:
+                        - Le marché de l'emploi au Cameroun et en Afrique centrale
+                        - Les secteurs porteurs : télécoms, finance, agriculture, BTP, santé, éducation
+                        - Les structures d'aide à l'emploi : FNE, ONEFOP, APME
+                        - Les techniques de recherche d'emploi, CV, lettres de motivation, entretiens
+                        - L'entrepreneuriat et les opportunités de financement au Cameroun
+                        Tu réponds toujours en français, de façon bienveillante, concrète et encourageante.
+                        Tu utilises des emojis pour rendre tes réponses vivantes. 
+                        Tes réponses sont claires, structurées et adaptées au contexte camerounais."""
+
+                        messages = [{"role": "system", "content": system_prompt}]
+                        messages += [{"role": m["role"], "content": m["content"]} 
+                                    for m in st.session_state.ken_messages]
+
+                        response = client.chat.completions.create(
+                            model="llama3-8b-8192",
+                            messages=messages,
+                            max_tokens=1000,
+                            temperature=0.7
+                        )
+
+                        reply = response.choices[0].message.content
+                        st.markdown(reply)
+                        st.session_state.ken_messages.append({"role": "assistant", "content": reply})
+
+                except Exception as e:
+                    st.error(f"Erreur KEN AI : {str(e)}")
+
+    # Quick suggestions
+    st.markdown("---")
+    st.markdown("**💡 Questions suggérées :**")
+    col1, col2, col3 = st.columns(3)
+    suggestions = [
+        ("🎯 Secteurs porteurs", "Quels sont les secteurs qui recrutent le plus au Cameroun en 2026 ?"),
+        ("📄 Améliorer mon CV", "Comment rédiger un CV percutant pour le marché camerounais ?"),
+        ("💼 Préparer un entretien", "Comment bien préparer un entretien d'embauche ?"),
+        ("🚀 Créer mon entreprise", "Comment lancer une startup au Cameroun avec peu de moyens ?"),
+        ("💰 Trouver un financement", "Quelles structures financent les jeunes entrepreneurs au Cameroun ?"),
+        ("🌍 Travailler à l'étranger", "Comment postuler pour des emplois en dehors du Cameroun ?"),
+    ]
+    for i, (label, question) in enumerate(suggestions):
+        with [col1, col2, col3][i % 3]:
+            if st.button(label, key=f"sug_{i}", use_container_width=True):
+                st.session_state.ken_messages.append({"role": "user", "content": question})
+                st.rerun()
