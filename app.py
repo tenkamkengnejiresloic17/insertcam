@@ -32,7 +32,7 @@ st.set_page_config(
 
 st.markdown("""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Inter:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Inter:wght@300;400;500;600&family=Outfit:wght@700;800;900&display=swap');
 
 html, body, [class*="css"] {
     font-family: 'Inter', sans-serif;
@@ -96,7 +96,7 @@ section[data-testid="stSidebar"] .stRadio label { font-size: 0.95rem; padding: 4
 .kpi-card.gold  { border-left-color: #FCD116; }
 .kpi-card.blue  { border-left-color: #2563EB; }
 .kpi-label  { font-size: 0.78rem; color: #6b7280; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 4px; }
-.kpi-value  { font-family: 'Syne', sans-serif; font-size: 2.2rem; font-weight: 800; color: #1a1a1a; line-height: 1; }
+.kpi-value  { font-family: 'Outfit', sans-serif; font-size: 2.2rem; font-weight: 800; color: #1a1a1a; line-height: 1; }
 .kpi-sub    { font-size: 0.78rem; color: #6b7280; margin-top: 4px; }
 
 /* ── SECTION TITLE ── */
@@ -179,9 +179,10 @@ with st.sidebar:
     """, unsafe_allow_html=True)
 
     st.markdown("""
-    <div style='position:fixed; bottom:1rem; left:0; width:260px; text-align:center;
-                font-size:0.7rem; opacity:0.5;'>
-        TP INF232 EC2 · Python · Streamlit
+    <div style='position:fixed; bottom:1rem; left:0; width:260px; text-align:center; font-size:0.72rem; line-height:1.7;'>
+        <div style='width:60%; margin:0 auto 6px auto; border-top:1px solid rgba(255,255,255,0.25);'></div>
+        <div style='font-weight:700; font-size:0.8rem; letter-spacing:0.5px;'>© 2024 InsertCam</div>
+        <div style='opacity:0.65; font-size:0.68rem;'>Plateforme Nationale de Suivi<br>de l'Insertion Professionnelle<br>des Jeunes Diplômés du Cameroun</div>
     </div>
     """, unsafe_allow_html=True)
 
