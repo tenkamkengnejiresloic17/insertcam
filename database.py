@@ -87,6 +87,17 @@ def count_profils() -> int:
     return n
 
 
+def get_summary_stats() -> dict:
+    conn = get_connection()
+    c = conn.cursor()
+    total    = c.execute("SELECT COUNT(*) FROM profils").fetchone()[0]
+    employes = c.execute("SELECT COUNT(*) FROM profils WHERE statut_actuel='Employé(e)'").fetchone()[0]
+    auto_ent = c.execute("SELECT COUNT(*) FROM profils WHERE statut_actuel='Auto-entrepreneur(e)'").fetchone()[0]
+    regions  = c.execute("SELECT COUNT(DISTINCT region) FROM profils").fetchone()[0]
+    conn.close()
+    return {"total": total, "employes": employes, "auto_ent": auto_ent, "regions": regions}
+
+
 def seed_demo_data():
     """Données de démonstration si la base est vide."""
     if count_profils() > 0:
