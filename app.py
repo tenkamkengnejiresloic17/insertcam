@@ -622,7 +622,7 @@ elif "KEN AI" in page:
         <div class="badge">🤖 INTELLIGENCE ARTIFICIELLE</div>
         <h1>KEN AI</h1>
         <p>Votre conseiller personnel en orientation professionnelle — disponible 24h/24 </p>
-        <p>.                     created by KEN MICHAEL </p>
+        <p>                     created by KEN MICHAEL </p>
     </div>
     """, unsafe_allow_html=True)
 
@@ -638,7 +638,7 @@ elif "KEN AI" in page:
     # Display chat history
     for msg in st.session_state.ken_messages:
         if msg["role"] == "assistant":
-            with st.chat_message("assistant", avatar="🤖"):
+            with st.chat_message("assistant", avatar="🧠"):
                 st.markdown(msg["content"])
         else:
             with st.chat_message("user", avatar="🎓"):
@@ -652,7 +652,7 @@ elif "KEN AI" in page:
             st.markdown(prompt)
 
         # Call Groq API
-        with st.chat_message("assistant", avatar="🤖"):
+        with st.chat_message("assistant", avatar="🧠"):
             with st.spinner("KEN AI réfléchit..."):
                 try:
                     api_key = st.secrets.get("GROQ_API_KEY", "")
