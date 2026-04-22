@@ -620,7 +620,7 @@ elif "KEN AI" in page:
     <div class="hero" style="background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 50%, #1d4ed8 100%);">
         <div class="badge">🤖 INTELLIGENCE ARTIFICIELLE</div>
         <h1>KEN AI</h1>
-        <p>Votre conseiller personnel en orientation professionnelle — disponible 24h/24</p>
+        <p>Votre conseiller personnel en orientation professionnelle — disponible 24h/24 created by KEN MICHAEL</p>
     </div>
     """, unsafe_allow_html=True)
 
