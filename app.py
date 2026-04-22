@@ -675,7 +675,7 @@ elif "KEN AI" in page:
                                     for m in st.session_state.ken_messages]
 
                         response = client.chat.completions.create(
-                            model="llama3-8b-8192",
+                            model="llama-3.3-70b-versatile",
                             messages=messages,
                             max_tokens=1000,
                             temperature=0.7
