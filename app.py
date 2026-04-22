@@ -9,7 +9,15 @@ import plotly.express as px
 import plotly.graph_objects as go
 from datetime import date
 import io
-from database import init_db, insert_profil, get_all_profils, count_profils, seed_demo_data
+from database import init_db, insert_profil, get_all_profils, count_profils, seed_demo_data, get_summary_stats
+
+@st.cache_data(ttl=60)
+def load_data():
+    return get_all_profils()
+
+@st.cache_data(ttl=60)
+def load_stats():
+    return get_summary_stats()
 
 # ── CONFIGURATION ────────────────────────────────────────────────────────────
 
