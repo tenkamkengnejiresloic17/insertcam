@@ -620,7 +620,7 @@ elif "KEN AI" in page:
     <div class="hero" style="background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 50%, #1d4ed8 100%);">
         <div class="badge">🤖 INTELLIGENCE ARTIFICIELLE</div>
         <h1>KEN AI</h1>
-        <p>Votre conseiller personnel en orientation professionnelle — disponible 24h/24 created by KEN MICHAEL</p>
+        <p>Votre conseiller personnel en orientation professionnelle — disponible 24h/24</p>
     </div>
     """, unsafe_allow_html=True)
 
@@ -704,4 +704,40 @@ elif "KEN AI" in page:
         with [col1, col2, col3][i % 3]:
             if st.button(label, key=f"sug_{i}", use_container_width=True):
                 st.session_state.ken_messages.append({"role": "user", "content": question})
+                st.session_state.ken_pending = question
                 st.rerun()
+
+    # Traiter la question suggérée en attente
+    if "ken_pending" in st.session_state and st.session_state.ken_pending:
+        question = st.session_state.ken_pending
+        st.session_state.ken_pending = None
+        try:
+            api_key = st.secrets.get("GROQ_API_KEY", "")
+            if api_key:
+                client = Groq(api_key=api_key)
+                system_prompt = """Tu es KEN AI, un conseiller expert en orientation professionnelle 
+                spécialisé pour les jeunes diplômés camerounais. Tu connais parfaitement:
+                - Le marché de l'emploi au Cameroun et en Afrique centrale
+                - Les secteurs porteurs : télécoms, finance, agriculture, BTP, santé, éducation
+                - Les structures d'aide à l'emploi : FNE, ONEFOP, APME
+                - Les techniques de recherche d'emploi, CV, lettres de motivation, entretiens
+                - L'entrepreneuriat et les opportunités de financement au Cameroun
+                Tu réponds toujours en français, de façon bienveillante, concrète et encourageante.
+                Tu utilises des emojis pour rendre tes réponses vivantes.
+                Tes réponses sont claires, structurées et adaptées au contexte camerounais."""
+
+                messages = [{"role": "system", "content": system_prompt}]
+                messages += [{"role": m["role"], "content": m["content"]}
+                            for m in st.session_state.ken_messages]
+
+                response = client.chat.completions.create(
+                    model="llama-3.3-70b-versatile",
+                    messages=messages,
+                    max_tokens=1000,
+                    temperature=0.7
+                )
+                reply = response.choices[0].message.content
+                st.session_state.ken_messages.append({"role": "assistant", "content": reply})
+                st.rerun()
+        except Exception as e:
+            st.error(f"Erreur KEN AI : {str(e)}")
